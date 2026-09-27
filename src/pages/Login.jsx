@@ -4,7 +4,7 @@ import { CheckSquare } from 'lucide-react'
 import { useAuth, TEAM } from '../context/AuthContext'
 
 export default function Login() {
-  const { login } = useAuth()
+  const { login, dbError } = useAuth()
   const nav = useNavigate()
   const [username, setUsername] = useState('')
   const [err, setErr] = useState('')
@@ -44,6 +44,11 @@ export default function Login() {
         <h1 className="text-2xl font-extrabold tracking-tight mb-1">Who are you? 👋</h1>
         <p className="text-sm text-slate-500 mb-6">Just type your username — no password. We'll remember you on this device.</p>
 
+        {dbError && (
+          <div className="mb-4 p-3 rounded-xl bg-red-50 border border-red-200 text-sm text-red-700">
+            <b>Can't reach database:</b> {dbError}
+          </div>
+        )}
         {err && <div className="mb-4 p-3 rounded-xl bg-red-50 border border-red-200 text-sm text-red-700">{err}</div>}
 
         <form onSubmit={submit} className="flex gap-2 mb-5">

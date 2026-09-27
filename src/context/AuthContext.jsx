@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from 'react'
-import { supabase } from '../lib/supabaseClient'
+import { supabase, configError } from '../lib/supabaseClient'
 
 const AuthContext = createContext(null)
 
@@ -22,6 +22,7 @@ export function AuthProvider({ children }) {
   const [dbError, setDbError] = useState(null)
 
   const fetchMembers = async () => {
+    if (!supabase) return
     const { data, error } = await supabase.from('profiles').select('*').order('created_at', { ascending: true })
     if (error) setDbError(error.message)
     else if (data) setMembers(data)
@@ -30,6 +31,11 @@ export function AuthProvider({ children }) {
   // Auto-login from remembered username
   useEffect(() => {
     const init = async () => {
+      if (configError) {
+        setDbError(configError)
+        setLoading(false)
+        return
+      }
       try {
         const saved = (localStorage.getItem(STORAGE_KEY) || '').toLowerCase().trim()
         if (saved) {
@@ -53,6 +59,7 @@ export function AuthProvider({ children }) {
   }, [])
 
   const login = async (name) => {
+    if (configError || !supabase) throw new Error(configError || 'Supabase is not configured.')
     const username = (name || '').toLowerCase().trim()
     if (!username) throw new Error('Type your username (blue, josh, kevin, or ivan).')
     const { data, error } = await supabase.from('profiles').select('*').eq('username', username).single()

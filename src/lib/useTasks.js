@@ -1,5 +1,9 @@
 import { useCallback, useEffect, useState } from 'react'
-import { supabase } from './supabaseClient'
+import { supabase, configError } from './supabaseClient'
+
+const needDb = () => {
+  if (!supabase) throw new Error(configError || 'Supabase is not configured.')
+}
 
 export function useTasks(user) {
   const [tasks, setTasks] = useState([])
@@ -7,6 +11,10 @@ export function useTasks(user) {
 
   const fetchTasks = useCallback(async () => {
     setLoading(true)
+    if (!supabase) {
+      setLoading(false)
+      return
+    }
     const { data, error } = await supabase
       .from('tasks')
       .select('*')
@@ -21,6 +29,7 @@ export function useTasks(user) {
 
   // Realtime sync
   useEffect(() => {
+    if (!supabase) return
     const ch = supabase
       .channel('tasks-changes')
       .on('postgres_changes', { event: '*', schema: 'public', table: 'tasks' }, () => {
@@ -31,6 +40,7 @@ export function useTasks(user) {
   }, [fetchTasks])
 
   const createTask = async (input) => {
+    needDb()
     const { data, error } = await supabase
       .from('tasks')
       .insert({ ...input, created_by: user?.id })
@@ -42,6 +52,7 @@ export function useTasks(user) {
   }
 
   const updateTask = async (id, patch) => {
+    needDb()
     const payload = { ...patch, updated_at: new Date().toISOString() }
     if (patch.status === 'done') payload.completed_at = new Date().toISOString()
     if (patch.status && patch.status !== 'done') payload.completed_at = null
@@ -56,6 +67,7 @@ export function useTasks(user) {
   }
 
   const deleteTask = async (id) => {
+    needDb()
     const { error } = await supabase.from('tasks').delete().eq('id', id)
     if (error) throw error
     await fetchTasks()
