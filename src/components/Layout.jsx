@@ -11,7 +11,7 @@ const links = [
 ]
 
 export default function Layout({ children }) {
-  const { profile, signOut } = useAuth()
+  const { profile, signOut, dbError } = useAuth()
   const nav = useNavigate()
 
   const handleSignOut = async () => {
@@ -94,7 +94,15 @@ export default function Layout({ children }) {
           </nav>
         </header>
 
-        <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto">{children}</main>
+        <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto">
+          {dbError && (
+            <div className="mb-4 p-3.5 rounded-2xl bg-red-50 border border-red-200 text-sm text-red-800">
+              <b>Database issue:</b> {dbError}
+              <span className="block mt-1 text-red-700">Run <code>supabase/username_login_setup.sql</code> once in Supabase SQL Editor, then refresh.</span>
+            </div>
+          )}
+          {children}
+        </main>
       </div>
     </div>
   )

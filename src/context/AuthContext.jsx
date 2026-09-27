@@ -19,27 +19,35 @@ export function AuthProvider({ children }) {
   const [profile, setProfile] = useState(null)
   const [members, setMembers] = useState([])
   const [loading, setLoading] = useState(true)
+  const [dbError, setDbError] = useState(null)
 
   const fetchMembers = async () => {
-    const { data } = await supabase.from('profiles').select('*').order('created_at', { ascending: true })
-    if (data) setMembers(data)
+    const { data, error } = await supabase.from('profiles').select('*').order('created_at', { ascending: true })
+    if (error) setDbError(error.message)
+    else if (data) setMembers(data)
   }
 
   // Auto-login from remembered username
   useEffect(() => {
     const init = async () => {
-      const saved = (localStorage.getItem(STORAGE_KEY) || '').toLowerCase().trim()
-      if (saved) {
-        const { data } = await supabase.from('profiles').select('*').eq('username', saved).single()
-        if (data) {
-          setUser({ id: data.id, username: data.username, email: data.email })
-          setProfile(data)
-        } else {
-          localStorage.removeItem(STORAGE_KEY)
+      try {
+        const saved = (localStorage.getItem(STORAGE_KEY) || '').toLowerCase().trim()
+        if (saved) {
+          const { data, error } = await supabase.from('profiles').select('*').eq('username', saved).single()
+          if (error) setDbError(error.message)
+          if (data) {
+            setUser({ id: data.id, username: data.username, email: data.email })
+            setProfile(data)
+          } else {
+            localStorage.removeItem(STORAGE_KEY)
+          }
         }
+        await fetchMembers()
+      } catch (e) {
+        setDbError(e.message)
+      } finally {
+        setLoading(false)
       }
-      await fetchMembers()
-      setLoading(false)
     }
     init()
   }, [])
@@ -63,7 +71,7 @@ export function AuthProvider({ children }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, profile, members, loading, login, signOut }}>
+    <AuthContext.Provider value={{ user, profile, members, loading, dbError, login, signOut }}>
       {children}
     </AuthContext.Provider>
   )
