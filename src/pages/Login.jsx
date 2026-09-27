@@ -4,7 +4,7 @@ import { CheckSquare } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 
 export default function Login() {
-  const { signIn, signUp, isDemo } = useAuth()
+  const { signIn, signUp } = useAuth()
   const nav = useNavigate()
   const [mode, setMode] = useState('signin')
   const [fullName, setFullName] = useState('')
@@ -12,11 +12,6 @@ export default function Login() {
   const [password, setPassword] = useState('')
   const [err, setErr] = useState('')
   const [busy, setBusy] = useState(false)
-
-  if (isDemo) {
-    nav('/')
-    return null
-  }
 
   const submit = async (e) => {
     e.preventDefault()

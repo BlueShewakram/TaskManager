@@ -1,6 +1,5 @@
 import { createContext, useContext, useEffect, useState } from 'react'
-import { supabase, isSupabaseConfigured } from '../lib/supabaseClient'
-import { loadDemoMembers } from '../lib/demoData'
+import { supabase } from '../lib/supabaseClient'
 
 const AuthContext = createContext(null)
 
@@ -10,18 +9,7 @@ export function AuthProvider({ children }) {
   const [members, setMembers] = useState([])
   const [loading, setLoading] = useState(true)
 
-  // Demo mode: fake logged-in admin
   useEffect(() => {
-    if (!isSupabaseConfigured) {
-      const demoMembers = loadDemoMembers()
-      setMembers(demoMembers)
-      const me = demoMembers[0]
-      setUser({ id: me.id, email: me.email })
-      setProfile(me)
-      setLoading(false)
-      return
-    }
-
     const init = async () => {
       const { data } = await supabase.auth.getSession()
       setUser(data.session?.user ?? null)
@@ -35,9 +23,12 @@ export function AuthProvider({ children }) {
     return () => listener.subscription.unsubscribe()
   }, [])
 
-  // Load profile + members when user exists (Supabase mode)
+  // Load profile + members when user exists
   useEffect(() => {
-    if (!isSupabaseConfigured || !user) return
+    if (!user) {
+      setProfile(null)
+      return
+    }
     const load = async () => {
       const { data: myProfile } = await supabase
         .from('profiles')
@@ -72,16 +63,13 @@ export function AuthProvider({ children }) {
   }
 
   const signOut = async () => {
-    if (!isSupabaseConfigured) return
     await supabase.auth.signOut()
     setUser(null)
     setProfile(null)
   }
 
   return (
-    <AuthContext.Provider
-      value={{ user, profile, members, loading, signUp, signIn, signOut, isDemo: !isSupabaseConfigured }}
-    >
+    <AuthContext.Provider value={{ user, profile, members, loading, signUp, signIn, signOut }}>
       {children}
     </AuthContext.Provider>
   )

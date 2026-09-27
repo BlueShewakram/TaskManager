@@ -6,7 +6,7 @@ import Layout from '../components/Layout'
 import { initials } from '../lib/demoData'
 
 export default function Members() {
-  const { user, members, isDemo } = useAuth()
+  const { user, members } = useAuth()
   const { tasks } = useTasks(user)
 
   const rows = useMemo(() => members.map((m) => {
@@ -23,9 +23,7 @@ export default function Members() {
     <Layout>
       <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">Team Members</h1>
       <p className="text-sm text-slate-500 mt-1 mb-6">
-        {isDemo
-          ? 'Demo team — in Supabase mode this lists real profiles from signup.'
-          : 'Everyone who signed up. Assign tasks via New Task → Assign to.'}
+        Everyone who signed up. Assign tasks via New Task → Assign to.
       </p>
 
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -57,12 +55,10 @@ export default function Members() {
         })}
       </div>
 
-      {!isDemo && (
-        <div className="mt-6 p-4 rounded-2xl bg-indigo-50 border border-indigo-200 text-sm text-indigo-900">
-          <b>How to add members:</b> share your Vercel URL — they click Sign Up with email + password.
-          Their profile appears here automatically (via the <code>handle_new_user</code> trigger in schema.sql).
-        </div>
-      )}
+      <div className="mt-6 p-4 rounded-2xl bg-indigo-50 border border-indigo-200 text-sm text-indigo-900">
+        <b>How to add members:</b> share your Vercel URL — they click Sign Up with email + password.
+        Their profile appears here automatically (via the <code>handle_new_user</code> trigger in schema.sql).
+      </div>
     </Layout>
   )
 }

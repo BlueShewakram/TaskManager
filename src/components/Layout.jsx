@@ -1,5 +1,5 @@
 import { NavLink, useNavigate } from 'react-router-dom'
-import { LayoutDashboard, KanbanSquare, UserCheck, Users, LogOut, CheckSquare, FlaskConical } from 'lucide-react'
+import { LayoutDashboard, KanbanSquare, UserCheck, Users, LogOut, CheckSquare } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 import { initials } from '../lib/demoData'
 
@@ -11,7 +11,7 @@ const links = [
 ]
 
 export default function Layout({ children }) {
-  const { profile, signOut, isDemo } = useAuth()
+  const { profile, signOut } = useAuth()
   const nav = useNavigate()
 
   const handleSignOut = async () => {
@@ -53,13 +53,6 @@ export default function Layout({ children }) {
           ))}
         </nav>
 
-        {isDemo && (
-          <div className="mb-4 p-3 rounded-xl bg-amber-50 border border-amber-200 text-xs text-amber-800 flex gap-2">
-            <FlaskConical size={16} className="shrink-0 mt-0.5" />
-            <span>Demo mode — connect Supabase to sync with your team.</span>
-          </div>
-        )}
-
         <div className="flex items-center gap-3 p-3 rounded-xl bg-slate-50 border border-slate-200">
           <div
             className="w-9 h-9 rounded-full grid place-items-center text-white text-xs font-bold shrink-0"
@@ -71,11 +64,9 @@ export default function Layout({ children }) {
             <p className="text-sm font-semibold truncate">{profile?.full_name || 'Member'}</p>
             <p className="text-xs text-slate-500 truncate">{profile?.role || 'member'}</p>
           </div>
-          {!isDemo && (
-            <button onClick={handleSignOut} title="Sign out" className="p-1.5 hover:bg-slate-200 rounded-lg text-slate-500">
-              <LogOut size={16} />
-            </button>
-          )}
+          <button onClick={handleSignOut} title="Sign out" className="p-1.5 hover:bg-slate-200 rounded-lg text-slate-500">
+            <LogOut size={16} />
+          </button>
         </div>
       </aside>
 

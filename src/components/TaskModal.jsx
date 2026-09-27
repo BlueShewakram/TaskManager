@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
 import { X } from 'lucide-react'
+import { PROJECT_DEADLINE } from '../lib/meta'
 
-const EMPTY = { title: '', description: '', status: 'todo', priority: 'medium', due_date: '', assigned_to: '' }
+const EMPTY = { title: '', description: '', status: 'todo', priority: 'medium', due_date: PROJECT_DEADLINE, assigned_to: '' }
 
 export default function TaskModal({ open, initial, members, onClose, onSave }) {
   const [form, setForm] = useState(EMPTY)

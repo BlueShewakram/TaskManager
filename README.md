@@ -9,8 +9,7 @@ Features:
 - ✅ Big **✓ Mark as Done** button — members click Done on their task
 - ✅ Assign tasks to members, priority, due dates, overdue badges
 - ✅ My Tasks page (only yours), Members page with per-person progress
-- ✅ Supabase Auth (email/password) + realtime sync
-- ✅ Demo mode (localStorage) — works instantly even before Supabase is set up
+- ✅ Supabase Auth (email/password) + realtime sync — pure database mode, no localStorage
 
 ## 1. Supabase setup (5 min)
 
@@ -40,10 +39,8 @@ npm install
 npm run dev
 ```
 
-Open http://localhost:5173
-
-- If `.env.local` is present + schema.sql was run → real Supabase mode (sign up / sign in).
-- If keys missing → demo mode with 4 fake members + sample tasks (localStorage).
+Open http://localhost:5173 — sign up / sign in with Supabase Auth.
+Requires `.env.local` + `supabase/schema.sql` already run.
 
 ## 3. Deploy on Vercel
 
