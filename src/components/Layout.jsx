@@ -62,7 +62,7 @@ export default function Layout({ children }) {
           </div>
           <div className="min-w-0 flex-1">
             <p className="text-sm font-semibold truncate">{profile?.full_name || 'Member'}</p>
-            <p className="text-xs text-slate-500 truncate">{profile?.role || 'member'}</p>
+            <p className="text-xs text-slate-500 truncate">{profile?.email || 'Team member'}</p>
           </div>
           <button onClick={handleSignOut} title="Sign out" className="p-1.5 hover:bg-slate-200 rounded-lg text-slate-500">
             <LogOut size={16} />

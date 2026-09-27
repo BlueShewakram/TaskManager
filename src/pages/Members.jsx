@@ -39,7 +39,6 @@ export default function Members() {
                   <p className="font-extrabold truncate">{m.full_name}</p>
                   <p className="text-xs text-slate-500 flex items-center gap-1 truncate"><Mail size={11} />{m.email}</p>
                 </div>
-                <span className="ml-auto text-[11px] font-bold px-2 py-1 rounded-full bg-indigo-50 text-indigo-700 uppercase">{m.role}</span>
               </div>
               <div className="flex gap-2 text-center mb-3">
                 <div className="flex-1 bg-slate-50 rounded-xl py-2"><p className="font-extrabold">{m.open}</p><p className="text-[11px] text-slate-500 font-medium">Open</p></div>
@@ -56,8 +55,7 @@ export default function Members() {
       </div>
 
       <div className="mt-6 p-4 rounded-2xl bg-indigo-50 border border-indigo-200 text-sm text-indigo-900">
-        <b>How to add members:</b> share your Vercel URL — they click Sign Up with email + password.
-        Their profile appears here automatically (via the <code>handle_new_user</code> trigger in schema.sql).
+        <b>Fixed team of 4:</b> blue, josh, kevin, ivan. Login just needs the username — it's remembered on each device.
       </div>
     </Layout>
   )

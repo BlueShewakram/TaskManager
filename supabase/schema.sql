@@ -7,10 +7,12 @@ create table if not exists public.profiles (
   id uuid primary key references auth.users(id) on delete cascade,
   email text not null,
   full_name text not null default 'Member',
-  role text not null default 'member' check (role in ('admin','member')),
   avatar_color text not null default '#6366f1',
   created_at timestamptz default now()
 );
+
+-- Remove old role column if this schema is re-run on an existing DB (no more admin/member distinction)
+alter table public.profiles drop column if exists role;
 
 -- 2) Tasks
 create table if not exists public.tasks (
