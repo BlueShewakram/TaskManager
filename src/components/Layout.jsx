@@ -64,10 +64,18 @@ export default function Layout({ children }) {
             <p className="text-sm font-semibold truncate">{profile?.full_name || 'Member'}</p>
             <p className="text-xs text-slate-500 truncate">{profile?.email || 'Team member'}</p>
           </div>
-          <button onClick={handleSignOut} title="Sign out" className="p-1.5 hover:bg-slate-200 rounded-lg text-slate-500">
+          <button onClick={handleSignOut} title="Log out" className="p-1.5 hover:bg-slate-200 rounded-lg text-slate-500">
             <LogOut size={16} />
           </button>
         </div>
+
+        <button
+          onClick={handleSignOut}
+          className="mt-2.5 w-full flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-xl text-sm font-bold text-red-600 bg-red-50 hover:bg-red-100 border border-red-200 transition"
+        >
+          <LogOut size={16} />
+          Log out
+        </button>
       </aside>
 
       {/* Main */}
@@ -91,6 +99,13 @@ export default function Layout({ children }) {
                 {label.split(' ')[0]}
               </NavLink>
             ))}
+            <button
+              onClick={handleSignOut}
+              title="Log out"
+              className="p-1.5 rounded-lg text-red-600 bg-red-50"
+            >
+              <LogOut size={14} />
+            </button>
           </nav>
         </header>
 
