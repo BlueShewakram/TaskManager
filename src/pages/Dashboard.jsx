@@ -1,8 +1,8 @@
 import { useMemo, useState } from 'react'
-import { Plus, Search } from 'lucide-react'
+import { Plus, Search, CalendarClock } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 import { useTasks } from '../lib/useTasks'
-import { isOverdue } from '../lib/meta'
+import { isOverdue, PROJECT_DEADLINE, daysUntilDeadline } from '../lib/meta'
 import Layout from '../components/Layout'
 import TaskCard from '../components/TaskCard'
 import TaskModal from '../components/TaskModal'
@@ -51,6 +51,15 @@ export default function Dashboard() {
         <button onClick={openCreate} className="ml-auto inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold shadow-lg shadow-indigo-200">
           <Plus size={16} /> New Task
         </button>
+      </div>
+
+      {/* Deadline banner */}
+      <div className="mb-6 flex items-center gap-3 p-4 rounded-2xl bg-gradient-to-r from-rose-600 to-orange-500 text-white shadow-md">
+        <CalendarClock size={26} className="shrink-0" />
+        <div>
+          <p className="font-extrabold text-sm sm:text-base">Capstone deadline: Oct 14, 2026 ({daysUntilDeadline()} days left)</p>
+          <p className="text-xs sm:text-[13px] opacity-90">All 13 tasks are due {PROJECT_DEADLINE}. Finish early so Josh can secure signatures + manuscript review.</p>
+        </div>
       </div>
 
       {/* Stats */}

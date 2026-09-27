@@ -15,6 +15,14 @@ export const PRIORITIES = [
 export const statusLabel = (s) => STATUSES.find((x) => x.id === s)?.label ?? s
 export const priorityStyle = (p) => PRIORITIES.find((x) => x.id === p)?.style ?? 'bg-slate-100 text-slate-600'
 
+// Capstone deadline — Oct 14
+export const PROJECT_DEADLINE = '2026-10-14'
+
+export function daysUntilDeadline(deadline = PROJECT_DEADLINE) {
+  const ms = new Date(deadline + 'T00:00:00') - new Date(new Date().toDateString())
+  return Math.ceil(ms / 864e5)
+}
+
 export function isOverdue(task) {
   if (!task.due_date || task.status === 'done') return false
   return new Date(task.due_date) < new Date(new Date().toDateString())

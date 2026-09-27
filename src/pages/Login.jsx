@@ -57,7 +57,7 @@ export default function Login() {
 
         <form onSubmit={submit} className="space-y-3.5">
           {mode === 'signup' && (
-            <input value={fullName} onChange={(e) => setFullName(e.target.value)} placeholder="Full name (e.g. Alex Rivera)" required
+            <input value={fullName} onChange={(e) => setFullName(e.target.value)} placeholder="Full name (e.g. Blue Shewakram)" required
               className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
           )}
           <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" required
